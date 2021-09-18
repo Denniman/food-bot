@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Profile from './Pages/Home';
+import Home from './Pages/Home';
 import Summary from './Pages/Summary';
 
 const Routing = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Profile} />
+        <Route exact path="/" component={Home} />
         <Route exact path="/meal-summary" component={Summary} />
       </Switch>
     </Router>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, lazy } from 'react';
-import axios from 'axios';
+import React, { lazy } from 'react';
+
 import {
   Wrapper,
   List,
@@ -9,7 +9,9 @@ import {
   TextMain,
 } from './styles';
 
-import ProfileImg from '../../assets/images/my_passport.jpg';
+const randomNumber = Math.floor(Math.random() * 100);
+
+const randomeImg = `https://randomuser.me/api/portraits/men/${randomNumber}.jpg`;
 
 const Layout = lazy(() => import('../Layout'));
 
@@ -21,34 +23,26 @@ export const DisplayList: React.FC<listProps> = ({ name }) => {
   return <li>{name}</li>;
 };
 
-const ProfileCard: React.FC = () => {
+interface ProfileCardsProps {
+  name: string;
+  id: string;
+  address: string;
+  phone: string;
+  about: string;
+  likes: string[];
+  dislikes: string[];
+}
+
+const ProfileCard: React.FC<ProfileCardsProps> = ({
+  id,
+  about,
+  likes,
+  dislikes,
+  address,
+  phone,
+  name,
+}) => {
   // const [error, setError] = useState(nulfalse)
-
-  const [userData, setUserData] = useState({
-    name: '',
-    id: '',
-    address: '',
-    phone: '',
-    about: '',
-    likes: [],
-    dislikes: [],
-  });
-
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const { data } = await axios.get(
-          'https://indapi.kumba.io/webdev/assignment'
-        );
-
-        setUserData(data.user);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getUserData();
-  }, []);
 
   return (
     <Layout>
@@ -58,26 +52,26 @@ const ProfileCard: React.FC = () => {
             <h1>Customer Profile</h1>
           </div>
           <div className="user--profile_name">
-            <img src={ProfileImg} alt="user" className="img" />
+            <img src={randomeImg} alt="user" className="img" />
 
             <div className="name">
               <div className="user--profile_address">
                 <HeadingTertiary>Customer ID</HeadingTertiary>
-                <TextMain>{userData.id}</TextMain>
+                <TextMain>{id}</TextMain>
               </div>
               <div className="user--profile_address">
                 <HeadingTertiary>Name</HeadingTertiary>
-                <TextMain>{userData.name}</TextMain>
+                <TextMain>{name}</TextMain>
               </div>
             </div>
             <div className="address">
               <div className="user--profile_address">
                 <HeadingTertiary>Phone number:</HeadingTertiary>
-                <TextMain>{userData.phone}</TextMain>
+                <TextMain>{phone}</TextMain>
               </div>
               <div className="user--profile_address">
                 <HeadingTertiary>Address:</HeadingTertiary>
-                <TextMain>{userData.address}</TextMain>
+                <TextMain>{address}</TextMain>
               </div>
             </div>
           </div>
@@ -87,13 +81,13 @@ const ProfileCard: React.FC = () => {
           <div className="about--section">
             <div className="about">
               <HeadingTertiary>About:</HeadingTertiary>
-              <TextMain>{userData.about}</TextMain>
+              <TextMain>{about}</TextMain>
             </div>
 
             <div className="likes">
               <HeadingTertiary>Likes</HeadingTertiary>
               <List>
-                {userData.likes.map((item, i) => (
+                {likes.map((item, i) => (
                   <DisplayList key={i} name={item} />
                 ))}
               </List>
@@ -102,7 +96,7 @@ const ProfileCard: React.FC = () => {
             <div className="dislikes">
               <HeadingTertiary>DisLikes</HeadingTertiary>
               <List>
-                {userData.dislikes.map((item, i) => (
+                {dislikes.map((item, i) => (
                   <DisplayList key={i} name={item} />
                 ))}
               </List>
